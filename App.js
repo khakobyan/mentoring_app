@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,6 +14,7 @@ import {
   View,
   Text,
   StatusBar,
+  Platform
 } from 'react-native';
 
 import {
@@ -23,11 +24,15 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import SplashScreen from 'react-native-splash-screen'
 
-const App: () => React$Node = () => {
+const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, [])
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      {Platform.OS === 'ios' ? <StatusBar barStyle="light-content" /> : <StatusBar barStyle="dark-content" />}
       <SafeAreaView>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
