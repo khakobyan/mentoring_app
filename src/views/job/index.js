@@ -8,7 +8,7 @@ import { heightPercentageToDP, widthPercentageToDP } from '../../utils/sizes';
 import database from '@react-native-firebase/database';
 
 export default function JobInfoScreen({navigation}) {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [department, setDepartment] = useState(user.department || '');
   const [job_title, setJobTitle] = useState(user.job_title || '');
   const [job_description, setJobDescription] = useState(user.job_description || '');
@@ -17,7 +17,12 @@ export default function JobInfoScreen({navigation}) {
     database()
     .ref(`/users/${user.key}`)
     .update({department, job_title, job_description})
-    .then(() => navigation.navigate('Home'))
+    .then(() => {
+      database().ref(`/users/${user.key}`).once('value').then(res => {
+        setUser(res.val());
+        navigation.navigate('Home');
+      })
+    })
   }
 
   return (

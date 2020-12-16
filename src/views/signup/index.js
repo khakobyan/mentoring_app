@@ -26,8 +26,11 @@ export default function SignupScreen() {
         const longitude = res.coords.longitude.toFixed(5).toString();
         setLocation({latitude, longitude})
       },
-      (err) => {console.log(err)},
-      { enableHighAccuracy: true, timeout: 2000, maximumAge: 3600000 }
+      (err) => {
+        setLocation({latitude: '10', longitude: '10'})
+        console.log(err)
+      },
+      { enableHighAccuracy: true }
     );
     const unsubscribe = navigation.addListener('blur', () => {
       setAuthError('');
@@ -42,13 +45,15 @@ export default function SignupScreen() {
           value={first_name}
           placeholderText='First Name'
           onChangeText={userFirstName => setFirstName(userFirstName)}
-          secureTextEntry={true}
+          autoCapitalize={true}
+          autoCorrect={false}
         />
         <FormInput
           value={last_name}
           placeholderText='Last Name'
           onChangeText={userLastName => setLastName(userLastName)}
-          secureTextEntry={true}
+          autoCapitalize={true}
+          autoCorrect={false}
         />
         <FormInput
           value={email}

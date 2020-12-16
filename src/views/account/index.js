@@ -13,7 +13,7 @@ import database from '@react-native-firebase/database';
 import storage from '@react-native-firebase/storage';
 
 export default function AccountScreen({ navigation }) {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [email, setEmail] = useState(user.email);
   const [first_name, setFirstName] = useState(user.first_name);
   const [last_name, setLastName] = useState(user.last_name);
@@ -66,12 +66,17 @@ export default function AccountScreen({ navigation }) {
         imageRef.delete();
       }
       const reference = storage().ref(file_name);
-      reference.putFile(filePath.uri).then(res => console.log('res', res));
+      reference.putFile(filePath.uri);
     }
     database()
     .ref(`/users/${user.key}`)
     .update({email, first_name, last_name, location, file_name})
-    .then(res => navigation.navigate('Home'))
+    .then(() => {
+      database().ref(`/users/${user.key}`).once('value').then(res => {
+        setUser(res.val());
+        navigation.navigate('Home');
+      })
+    })
   }
 
   return (

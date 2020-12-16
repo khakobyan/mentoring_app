@@ -32,12 +32,14 @@ export const AuthProvider = ({ children }) => {
             console.log(e);
           }
         },
-        register: async (email, password, first_name, last_name, location, file_name) => {
+        register: async (email, password, first_name, last_name, location, file_name, department='', job_title='', job_description='') => {
           try {
             if (email.length && password.length && first_name.length && last_name.length) {
               const new_user = await (await auth().createUserWithEmailAndPassword(email, password)).user;
               const uid = await new_user.uid;
-              const newReference = await database().ref('/users').push({email, uid, first_name, last_name, location, file_name});
+              const newReference = await database()
+              .ref('/users')
+              .push({email, uid, first_name, last_name, location, file_name, department, job_title, job_description});
               await database().ref(`/users/${newReference.key}`).update({key: newReference.key})
             } else {
               setAuthError('All fields are required')
