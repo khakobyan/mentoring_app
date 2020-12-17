@@ -21,7 +21,7 @@ function CreateGroupScreen({fetchGroups, navigation}) {
   const saveGroup = () => {
     Storage.getGroups()
     .then(res => {
-      let tmp_arr = JSON.parse(res);
+      let tmp_arr = res ? JSON.parse(res) : [];
       tmp_arr.push({group_name, group_members, user_id: user.uid});
       Storage.setGroups(JSON.stringify(tmp_arr)).then(() => {
         fetchGroups(user.uid);

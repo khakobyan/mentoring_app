@@ -4,7 +4,7 @@ import {
 } from '../utils/action_types';
 import storage from '@react-native-firebase/storage';
 import csv from 'csvtojson';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 
 export const setEmployeesLoading = loading => {
 	return {

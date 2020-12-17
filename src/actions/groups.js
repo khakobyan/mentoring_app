@@ -14,10 +14,17 @@ export const setGroupsLoading = loading => {
 export const fetchGroups = (user_id) => dispatch => {
   dispatch(setGroupsLoading(true));
   Storage.getGroups().then(res => {
-    dispatch({
-      type: SET_GROUPS,
-      payload: JSON.parse(res).filter(group => group.user_id == user_id)
-    })
+    if (res) {
+      dispatch({
+        type: SET_GROUPS,
+        payload: JSON.parse(res).filter(group => group.user_id == user_id)
+      })
+    } else {
+      dispatch({
+        type: SET_GROUPS,
+        payload: []
+      })
+    }
     dispatch(setGroupsLoading(false));
   })
   .catch(e => {
