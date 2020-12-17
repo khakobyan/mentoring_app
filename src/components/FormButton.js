@@ -3,9 +3,9 @@ import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { PURPLE, WHITE } from '../utils/colors';
 import { heightPercentageToDP, widthPercentageToDP } from '../utils/sizes';
 
-export default function FormButton({ buttonTitle, ...rest }) {
+export default function FormButton({ buttonTitle, buttonContainerStyle, ...rest }) {
   return (
-    <TouchableOpacity style={styles.buttonContainer} {...rest}>
+    <TouchableOpacity style={{...styles.buttonContainer, ...buttonContainerStyle}} {...rest}>
       <Text style={styles.buttonText}>{buttonTitle}</Text>
     </TouchableOpacity>
   );

@@ -1,12 +1,19 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import FormButton from '../../components/FormButton';
 import { sendEmail } from '../../helpers/send-email';
 import { AuthContext } from '../../navigation/AuthProvider';
+import { connect } from 'react-redux';
+import { fetchEmployees, fetchGroups } from '../../actions';
 
-export default function HomeScreen() {
+function HomeScreen({fetchEmployees, fetchGroups, navigation}) {
   const { user, logout } = useContext(AuthContext);
   const [subject, setSubject] = useState(`${user.first_name} ${user.last_name}'s info`);
+
+  useEffect(() => {
+    fetchEmployees();
+    fetchGroups(user.uid);
+  }, [])
 
   const prepareAndSendEmail = () => {
     let tmp_str = '';
@@ -26,6 +33,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <Text style={styles.text}>{`Welcome  ${user.first_name} ${user.last_name}`}</Text>
       <FormButton buttonTitle='Share My Info' onPress={prepareAndSendEmail} /> 
+      <FormButton buttonTitle='Create Group' onPress={() => navigation.navigate('CreateGroup')} /> 
       <FormButton buttonTitle='Logout' onPress={() => logout()} />
     </View>
   );
@@ -43,3 +51,5 @@ const styles = StyleSheet.create({
     color: '#333333'
   }
 });
+
+export default connect(null,{ fetchEmployees, fetchGroups })(HomeScreen);

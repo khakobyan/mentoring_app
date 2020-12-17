@@ -9,8 +9,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { widthPercentageToDP } from '../utils/sizes';
 import GroupsScreen from '../views/groups';
 import JobInfoScreen from '../views/job';
+import CreateGroupScreen from '../views/groups/create';
+import MemberScreen from '../views/member';
+import GroupScreen from '../views/groups/group';
 
 const Stack = createStackNavigator();
+const HomeStack = createStackNavigator();
+const GroupsStack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
@@ -37,14 +42,33 @@ function Home() {
     >
       <Tab.Screen 
         name="Home"
-        component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({color}) => (
             <Icon color={color} name="home" size={widthPercentageToDP('6')} />
           ),
         }}
-      />
+      >
+        { () => (
+        <HomeStack.Navigator screenOptions={{animationEnabled: false}}>
+          <HomeStack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{headerShown: false}}
+          />
+          <HomeStack.Screen
+            name="CreateGroup"
+            component={CreateGroupScreen}
+            options={{headerShown: false}}
+          />
+          <HomeStack.Screen
+            name="Member"
+            component={MemberScreen}
+            options={{headerShown: false}}
+          />
+        </HomeStack.Navigator>
+      )}
+      </Tab.Screen>
       <Tab.Screen 
         name="TopTabs"
         component={TopTabs}
@@ -57,19 +81,33 @@ function Home() {
       />
       <Tab.Screen
         name="Groups"
-        component={GroupsScreen}
         options={{
           tabBarLabel: 'Groups',
           tabBarIcon: ({color}) => (
             <Icon color={color} name="account-group" size={widthPercentageToDP('6')} />
           ),
         }}
-      />
+      >
+        { () => (
+          <GroupsStack.Navigator screenOptions={{animationEnabled: false}}>
+            <GroupsStack.Screen
+              name="Groups"
+              component={GroupsScreen}
+              options={{headerShown: false}}
+            />
+            <GroupsStack.Screen
+              name="Group"
+              component={GroupScreen}
+              options={{headerShown: false}}
+            />
+          </GroupsStack.Navigator>
+        )}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 }
 
-export default function HomeStack() {
+export default function UserStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen options={{header: () => null}}  name='Home' component={Home} />
