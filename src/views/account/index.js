@@ -54,7 +54,7 @@ export default function AccountScreen({ navigation }) {
     });
   }
 
-  const updateUser = () => {
+  const updateUser = async () => {
     const location = {latitude, longitude};
     if (email != user.email) {
       let user = auth().currentUser;
@@ -66,7 +66,7 @@ export default function AccountScreen({ navigation }) {
         imageRef.delete();
       }
       const reference = storage().ref(file_name);
-      reference.putFile(filePath.uri);
+      await reference.putFile(filePath.uri);
     }
     database()
     .ref(`/users/${user.key}`)
